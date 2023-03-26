@@ -47,20 +47,22 @@ const sendFunc = () => {
   if (form.name.value === '' || form.created.value === '') {
     main.classList.remove('hide');
     form.classList.remove('active');
+
     loadList();
-  } else {
-    const xhr2 = new XMLHttpRequest();
-    newElement.addNewTicket(form.name.value, form.created.value);
-    xhr2.open('POST', 'http://localhost:4040/createTicket');
-    xhr2.send(JSON.stringify(newElement));
-
-    main.classList.remove('hide');
-    form.classList.remove('active');
-    form.name.value = '';
-    form.created.value = '';
-
-    cancelFunc();
+    return;
   }
+
+  const xhr2 = new XMLHttpRequest();
+  newElement.addNewTicket(form.name.value, form.created.value);
+  xhr2.open('POST', 'http://localhost:4040/createTicket');
+  xhr2.send(JSON.stringify(newElement));
+
+  main.classList.remove('hide');
+  form.classList.remove('active');
+  form.name.value = '';
+  form.created.value = '';
+
+  cancelFunc();
 };
 
 // кнопка добавления тикета
@@ -120,18 +122,20 @@ document.addEventListener('click', (e) => {
 
     const currentId = +parentLi.id;
 
-    form.querySelector('.send').addEventListener('click', () => {
-      sendFunc();
+    if (form.name.value !== '' && form.created.value !== '') {
+      form.querySelector('.send').addEventListener('click', () => {
+        const newObj = { name: `${form.name.value}`, description: `${form.created.value}` };
 
-      const url = `http://localhost:4040/ticketById&${currentId}`;
-      const xhr = new XMLHttpRequest();
-      xhr.open('DELETE', url, true);
-      xhr.send();
+        const url = `http://localhost:4040/ticketById&${currentId}`;
+        const xhr = new XMLHttpRequest();
+        xhr.open('PUT', url, false);
+        xhr.send(JSON.stringify(newObj));
 
-      // eslint-disable-next-line no-restricted-globals
-      location.reload();
-    });
-
+        // eslint-disable-next-line no-restricted-globals
+        location.reload();
+        cancelFunc();
+      });
+    }
     cancel.addEventListener('click', cancelFunc);
   }
 
@@ -147,7 +151,6 @@ document.addEventListener('click', (e) => {
     });
 
     document.querySelector('.delete').addEventListener('click', () => {
-      console.log('delete');
       // eslint-disable-next-line array-callback-return, consistent-return
       const current = data.find((el) => {
         if (el.id === Number(e.target.parentElement.parentElement.id)) {
