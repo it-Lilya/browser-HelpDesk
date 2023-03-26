@@ -16,10 +16,10 @@
         <form class="form">
             <h3 class="title">Добавить тикет</h3>
                 <label for="briefly" class="label">Краткое описание</label>
-                <input id="briefly" name="name" type="text" class="field">
+                <input id="briefly" name="name" type="text" class="field" required>
 
                 <label for="full" class="label" class="label">Подробное описание</label>
-                <textarea id="full" name="created" type="text" class="field"></textarea>
+                <textarea id="full" name="created" type="text" class="field" required></textarea>
                 <div class="container-btns">
                     <button class="cancel btns" type="reset">Отмена</button>
                     <button class="send btns" type="button">Ок</button>
@@ -35,13 +35,7 @@
                 <button class="delete btns" type="button">Ок</button>
             </div>
         </div>
-            
-            <!-- <form class="form" method="POST" action="http://localhost:4040">
-                <h1 class="form__title">Выберите никнейм</h1>
-                <input type="text" name="name" class="input__form" required>
-                <button type="submit" class="btn">Войти в чат</button>
-            </form> -->
-            <!-- <div class="mistake"> Никнейм уже занят</div> -->
+    
         
     </div>
 </body>

@@ -13,7 +13,6 @@ body {
     border-radius: 10px;
     margin: 35px auto;
     position: relative;
-    min-height: 300px;
     background-color: rgb(211, 217, 222);
     padding: 10px;
     z-index: 0;

@@ -122,8 +122,29 @@ document.addEventListener('click', (e) => {
 
     const currentId = +parentLi.id;
 
-    if (form.name.value !== '' && form.created.value !== '') {
-      form.querySelector('.send').addEventListener('click', () => {
+    // form.name.addEventListener('input', (e) => {
+    //   if (e.target.value !== '') {
+    //     form.querySelector('.send').addEventListener('click', () => {
+    //       setTimeout(() => {
+    //         const newObj = { name: `${form.name.value}`, description: `${form.created.value}` };
+
+    //         const url = `http://localhost:4040/ticketById&${currentId}`;
+    //         const xhr = new XMLHttpRequest();
+    //         xhr.open('PUT', url, false);
+    //         xhr.send(JSON.stringify(newObj));
+
+    //         // eslint-disable-next-line no-restricted-globals
+    //         location.reload();
+    //         cancelFunc();
+    //         console.log(newObj)
+    //       }, 10);
+    //     });
+    //   }
+    // });
+
+    console.log('lo')
+    form.querySelector('.send').addEventListener('click', () => {
+      if (form.name.value !== '' && form.created.value !== '') {
         const newObj = { name: `${form.name.value}`, description: `${form.created.value}` };
 
         const url = `http://localhost:4040/ticketById&${currentId}`;
@@ -134,8 +155,10 @@ document.addEventListener('click', (e) => {
         // eslint-disable-next-line no-restricted-globals
         location.reload();
         cancelFunc();
-      });
-    }
+      }
+      cancelFunc();
+    });
+
     cancel.addEventListener('click', cancelFunc);
   }
 
