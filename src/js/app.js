@@ -6,6 +6,7 @@ const form = document.querySelector('.form');
 const main = document.querySelector('.main');
 const newElement = new Ticket();
 const cancel = document.querySelector('.cancel');
+const containerBtns = form.querySelector('.container-btns');
 
 let data;
 
@@ -67,13 +68,26 @@ const sendFunc = () => {
 
 // кнопка добавления тикета
 addedTicket.addEventListener('click', () => {
+  const btnAdded = document.createElement('button');
+  btnAdded.textContent = 'OK';
+  btnAdded.className = 'send btns';
+  if (containerBtns.querySelector('.send')) return;
+  containerBtns.append(btnAdded);
   form.classList.add('active');
   main.classList.add('hide');
 
-  // кнопка ок
-  form.querySelector('.send').addEventListener('click', sendFunc);
+  if (containerBtns.querySelector('.editing')) {
+    const editing = containerBtns.querySelector('.editing');
+    containerBtns.removeChild(editing);
+  }
 
-  // кнопка отмена
+  // кнопка ок добавления
+  btnAdded.addEventListener('click', () => {
+    sendFunc();
+    containerBtns.removeChild(btnAdded);
+  });
+
+  //   // кнопка отмена
   cancel.addEventListener('click', cancelFunc);
 });
 
@@ -111,6 +125,18 @@ document.addEventListener('click', (e) => {
 
   // редактирование записи
   if (e.target.classList.contains('edit')) {
+    // кнопка отправки отредактированной записи
+    const btnEdit = document.createElement('button');
+    btnEdit.textContent = 'OK';
+    btnEdit.className = 'editing btns';
+    if (containerBtns.querySelector('.editing')) return;
+    containerBtns.append(btnEdit);
+
+    if (containerBtns.querySelector('.send')) {
+      const send = containerBtns.querySelector('.send');
+      containerBtns.removeChild(send);
+    }
+
     form.classList.add('active');
     main.classList.add('hide');
 
@@ -122,43 +148,16 @@ document.addEventListener('click', (e) => {
 
     const currentId = +parentLi.id;
 
-    // form.name.addEventListener('input', (e) => {
-    //   if (e.target.value !== '') {
-    //     form.querySelector('.send').addEventListener('click', () => {
-    //       setTimeout(() => {
-    //         const newObj = { name: `${form.name.value}`, description: `${form.created.value}` };
-
-    //         const url = `http://localhost:4040/ticketById&${currentId}`;
-    //         const xhr = new XMLHttpRequest();
-    //         xhr.open('PUT', url, false);
-    //         xhr.send(JSON.stringify(newObj));
-
-    //         // eslint-disable-next-line no-restricted-globals
-    //         location.reload();
-    //         cancelFunc();
-    //         console.log(newObj)
-    //       }, 10);
-    //     });
-    //   }
-    // });
-
-    console.log('lo')
-    form.querySelector('.send').addEventListener('click', () => {
-      if (form.name.value !== '' && form.created.value !== '') {
-        const newObj = { name: `${form.name.value}`, description: `${form.created.value}` };
-
-        const url = `http://localhost:4040/ticketById&${currentId}`;
-        const xhr = new XMLHttpRequest();
-        xhr.open('PUT', url, false);
-        xhr.send(JSON.stringify(newObj));
-
-        // eslint-disable-next-line no-restricted-globals
-        location.reload();
-        cancelFunc();
-      }
+    btnEdit.addEventListener('click', (event) => {
+      event.preventDefault();
+      const newObj = { name: `${form.name.value}`, description: `${form.created.value}` };
+      const url = `http://localhost:4040/ticketById&${currentId}`;
+      const xhr = new XMLHttpRequest();
+      xhr.open('PUT', url, false);
+      xhr.send(JSON.stringify(newObj));
+      containerBtns.removeChild(btnEdit);
       cancelFunc();
     });
-
     cancel.addEventListener('click', cancelFunc);
   }
 
